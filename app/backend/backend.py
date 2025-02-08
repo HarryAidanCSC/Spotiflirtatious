@@ -5,7 +5,6 @@ from dotenv import load_dotenv
 import os
 import sys
 import pandas as pd
-from spotipy.oauth2 import SpotifyOAuth
 import base64
 import requests
 from PIL import Image, ImageFilter
@@ -69,7 +68,7 @@ def usr_current_playback(sp):
 
         # Initialise DF for artist info
         artist_df = pd.DataFrame(
-            columns=["artist_name", "artist_id", "artist_img", "artist_href"]
+            columns=["artist_name", "artist_id", "artist_img_href", "artist_href"]
         )
 
         # Loop through artists

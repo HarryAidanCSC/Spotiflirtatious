@@ -2,7 +2,7 @@
 body, html {
     margin: 0;
     padding: 0;
-    overflow: hidden; /* Prevents any scrollbars from appearing */
+    overflow: hidden;
 }
 
 /* Heading Text */
@@ -18,7 +18,7 @@ body, html {
     text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5); /* Soft glow for visibility */
     text-align: center;
     font-family: 'Poppins', sans-serif;
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(22px);
     padding: 10px 20px;
     border-radius: 10px;
 }
@@ -26,7 +26,7 @@ body, html {
 /* Button to refresh the image */
 .refresh-button {
     position: absolute;
-    top: 15%;
+    top: 15.5%;
     left: 50%;
     transform: translateX(-50%);
     z-index: 2;
@@ -61,7 +61,7 @@ body, html {
     font-style: italic;
     font-family: 'Poppins', sans-serif;
     text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(12px);
     padding: 8px 16px;
     border-radius: 8px;
     text-align: center;
@@ -79,3 +79,69 @@ body, html {
     z-index: 1;
     box-shadow: 10px 0 80px rgba(0, 0, 0, 0.7);  /* Vignette effect */
 }
+
+/* Artist Div */
+.artist-div {
+    position: absolute;
+    top: 30%;  /* Distance from the top */
+    right: 30px;  /* Distance from the right */
+    margin: 0;
+    padding: 20px;
+    color: white;
+    font-size: 16px;
+    border-radius: 12px;
+    display: flex; /* Enable flexbox */
+    flex-direction: column; /* Stack the content vertically */
+    align-items: center; /* Center items horizontally */
+    width: 22%;  /* Auto width based on content */
+    height: 56.7%;
+    gap: 12px;  /* Space between elements */
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.8); /* Soft shadow for depth */
+    backdrop-filter: blur(10px); /* Optional blur effect for a subtle background */
+}
+
+/* Heading for Artist Name */
+.artist-div h2 {
+    margin: 0;  /* Remove any margin to prevent offsets */
+    text-align: center; /* Align heading text to center */
+    font-size: 35px;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    color: white;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);  /* Slight shadow for clarity */
+    font-weight: bold;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5); /* Soft glow for visibility */
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    backdrop-filter: blur(220px);
+    padding: 5px 20px;
+    border-radius: 10px;
+}
+
+.artist-div p {
+    margin: 0;  /* Remove any margin to prevent offsets */
+    text-align: center; /* Align heading text to center */
+    font-size: 27px;
+    background: rgba(255, 255, 255, 0.2);
+    top: 0px;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    color: white;
+    padding: 4px 20px;
+    border-radius: 10px;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);  /* Slight shadow for clarity */
+}
+
+/* Artist Image */
+.artist-div img {
+    width: 80%;  /* Make the image take up 80% of the container width */
+    height: auto;  /* Maintain aspect ratio */
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5); /* Soft shadow effect */
+    margin-bottom: 20px; /* Adjusted margin for better spacing */
+    margin-top: 10px;
+    width: 290px;  /* Set the width */
+    height: 290px; /* Set the height equal to the width */
+    object-position: top;
+    object-fit: cover; /* Ensures the image covers the square area without stretching */
+}
+
