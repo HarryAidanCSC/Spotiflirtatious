@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "spotiflirtatious"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.13"
+spotipy = "^2.25.0"
+pandas = "^2.2.3"
+dash = "^2.18.2"
+dash-bootstrap-components = "^1.7.1"
+plotly = "^6.0.0"
+python-dotenv = "^1.0.1"
+requests = "^2.32.3"
+
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.29.5"
+pillow = "^11.1.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,81 @@
+/* General Reset */
+body, html {
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Prevents any scrollbars from appearing */
+}
+
+/* Heading Text */
+.heading-text {
+    position: absolute;
+    top: 2%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    color: white;
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5); /* Soft glow for visibility */
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    backdrop-filter: blur(5px);
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+
+/* Button to refresh the image */
+.refresh-button {
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    background: rgba(255, 255, 255, 0.2); /* Glassmorphism effect */
+    border: 1.5px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 12px 24px;
+    border-radius: 20px;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease-in-out;
+}
+
+/* Button hover effect */
+.refresh-button:hover {
+    background: rgba(255, 255, 255, 0.4);
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: translateX(-50%) scale(1.05); /* Slight scale effect */
+}
+
+/* Track Name Text */
+.track-name {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    color: white;
+    font-size: 1.2rem;
+    font-style: italic;
+    font-family: 'Poppins', sans-serif;
+    text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+
+/* Main Album Art Image */
+.album-art-image {
+    width: 30%;  /* Set the width of the image */
+    height: auto;  /* Maintain aspect ratio */
+    position: absolute;  /* Absolute positioning to layer the image */
+    top: 30%;  /* Position it a bit lower */
+    left: 50%;  /* Center the image horizontally */
+    transform: translateX(-50%);  /* Adjust centering */
+    z-index: 1;
+    box-shadow: 10px 0 80px rgba(0, 0, 0, 0.7);  /* Vignette effect */
+}

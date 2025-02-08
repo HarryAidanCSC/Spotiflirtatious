@@ -1,8 +1,7 @@
-# venv
-venv/
-
 # Compiled Python files
 *.pyc
 __pycache__/
-secret.py
 .cache
+
+# API keys
+.env
