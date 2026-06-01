@@ -1,7 +1,28 @@
-# Compiled Python files
-*.pyc
+# Python
 __pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+.venv/
+.venv-win/
+venv/
+
+# Spotify OAuth cache
 .cache
 
-# API keys
+# Environment variables
 .env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,4 +1,6 @@
+"""Entry point for the Spotiflirtatious Dash application."""
+
 from app.app import app
 
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run(debug=True)

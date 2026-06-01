@@ -1,107 +1,72 @@
-# %% Load modules
-import spotipy
-from spotipy.oauth2 import SpotifyOAuth
-from dotenv import load_dotenv
-import os
-import sys
-import pandas as pd
+"""Spotify API client and data-fetching utilities."""
+
 import base64
-import requests
-from PIL import Image, ImageFilter
 from io import BytesIO
 
+import pandas as pd
+import requests
+import spotipy
+from dotenv import load_dotenv
+from PIL import Image, ImageFilter
+from spotipy.oauth2 import SpotifyOAuth
 
-# Generate spotify client with pre-defined scope
-def create_spotify_client():
-    root = os.path.abspath(os.path.join(os.getcwd(), ".."))
-    sys.path.insert(2, root)
+SPOTIFY_SCOPES = [
+    "user-library-read",
+    "user-read-private",
+    "user-read-playback-state",
+    "user-read-email",
+]
 
-    # Load the .env file
+
+def create_spotify_client() -> spotipy.Spotify:
+    """Authenticate with Spotify and return an authorised client."""
     load_dotenv()
-
-    # Create a Spotify client
-    sp = spotipy.Spotify(
-        auth_manager=SpotifyOAuth(
-            scope=[
-                "user-library-read",
-                "user-read-private",
-                "user-read-playback-state",
-                "user-read-email",
-            ]
-        )
-    )
-    return sp
+    return spotipy.Spotify(auth_manager=SpotifyOAuth(scope=SPOTIFY_SCOPES))
 
 
-# Get current playback info
-def usr_current_playback(sp):
+def get_current_playback(sp: spotipy.Spotify) -> tuple[pd.DataFrame, pd.DataFrame] | tuple[None, None]:
+    """Fetch the user's currently-playing track and artist metadata.
 
-    # Get current playback info
-    current_playback = sp.current_playback()
+    Returns a (track_df, artist_df) tuple, or (None, None) when nothing is playing.
+    """
+    playback = sp.current_playback()
 
-    # If track is playing call API
-    if (
-        current_playback
-        and current_playback.get("is_playing")
-        and current_playback["item"]
-    ):
-
-        # ---------- Get Track Info ---------- #
-        track = current_playback["item"]
-
-        # Link to track
-        track_img_url = (
-            track["album"]["images"][0]["url"] if track["album"]["images"] else None
-        )
-
-        # Create DF for track info
-        track_df = pd.DataFrame(
-            {
-                "track_name": [track["name"]],
-                "track_href": [track["external_urls"]["spotify"]],
-                "track_img_href": [track_img_url],
-            }
-        )
-
-        # ---------- Get Artist Info ---------- #
-        artists = {c["name"]: c["id"] for c in current_playback["item"]["artists"]}
-
-        # Initialise DF for artist info
-        artist_df = pd.DataFrame(
-            columns=["artist_name", "artist_id", "artist_img_href", "artist_href"]
-        )
-
-        # Loop through artists
-        for i, (artist, artist_id) in enumerate(artists.items()):
-            # Get info from artist
-            artist_info = sp.artist(artist_id)
-
-            # Get image url
-            img_url = artist_info["images"][0]["url"] if artist_info["images"] else None
-
-            # Get artist url
-            artist_url = artist_info["external_urls"]["spotify"]
-
-            # Create new row
-            new_row = [artist, artist_id, img_url, artist_url]
-            artist_df.loc[i] = new_row  # Append to existing DF
-
-        return track_df, artist_df
-    else:
+    if not (playback and playback.get("is_playing") and playback.get("item")):
         return None, None
 
+    track = playback["item"]
 
-def blur_image(img_url):
-    response = requests.get(img_url)
+    # --- Track info ---
+    track_img_url = track["album"]["images"][0]["url"] if track["album"]["images"] else None
+    track_df = pd.DataFrame({
+        "track_name": [track["name"]],
+        "track_href": [track["external_urls"]["spotify"]],
+        "track_img_href": [track_img_url],
+    })
+
+    # --- Artist info (one row per credited artist) ---
+    artist_rows = []
+    for artist_stub in track["artists"]:
+        info = sp.artist(artist_stub["id"])
+        artist_rows.append({
+            "artist_name": artist_stub["name"],
+            "artist_id": artist_stub["id"],
+            "artist_img_href": info["images"][0]["url"] if info["images"] else None,
+            "artist_href": info["external_urls"]["spotify"],
+        })
+
+    artist_df = pd.DataFrame(artist_rows)
+    return track_df, artist_df
+
+
+def blur_image(img_url: str, radius: int = 20) -> str:
+    """Download an image, apply a Gaussian blur, and return it as a base64-encoded JPEG."""
+    response = requests.get(img_url, timeout=10)
+    response.raise_for_status()
+
     image = Image.open(BytesIO(response.content))
+    blurred = image.filter(ImageFilter.GaussianBlur(radius=radius))
 
-    # Apply Gaussian Blur
-    blurred_image = image.filter(ImageFilter.GaussianBlur(radius=20))
-
-    # Save the blurred image to a buffer
-    buffered = BytesIO()
-    blurred_image.save(buffered, format="JPEG")
-    # Encode the image as base64
-    img_base64 = base64.b64encode(buffered.getvalue()).decode("utf-8")
-
-    return img_base64
+    buffer = BytesIO()
+    blurred.save(buffer, format="JPEG")
+    return base64.b64encode(buffer.getvalue()).decode("utf-8")
